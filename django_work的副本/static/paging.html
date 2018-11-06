@@ -1,0 +1,52 @@
+
+{#分页处理#}
+{% load staticfiles %}
+
+<div>
+    <select id="ps" onchange="changePageSize(this)">
+        <option value="10"> </option>
+        <option value="10">10</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+</div>
+
+<div class="pagination">
+    {{ page_str }}
+</div>
+<script src="{% static 'js/jquery-1.12.4.js' %}"></script>
+{#<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>#}
+
+<script src="{% static 'js/jquery.cookie.js' %}"></script>
+
+<script>
+
+    $(function(){
+        var v = $(cookie('per_page_count', {'path': "/repository/data/"}));
+        {#let v = $.cookie('per_page_count', {'path': "/repository/data/"});#}
+        $('#ps').val(v);
+    });
+
+    function changePageSize(ths){
+        var v = $(ths).val();
+        console.log(v);
+        var b = $(cookie('per_page_count',v, {'path': "/repository/data/"}));
+        {#$.cookie('per_page_count',v, {'path': "/repository/data/"});#}
+        console.log(b);
+        location.reload();
+    }
+
+    $(function(){
+        var v = $.cookie('per_page_count', {'path': "/repository/data/"});
+        $('#ps').val(v);
+    });
+
+    function changePageSize(ths){
+        var v = $(ths).val();
+        console.log(v);
+        $.cookie('per_page_count',v, {'path': "/repository/data/"});
+
+        location.reload();
+    }
+</script>

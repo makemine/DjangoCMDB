@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table{width:100%;empty-cells:show;background-color:transparent;border-collapse:collapse;border-spacing:0}
+        table th{text-align:left; font-weight:400}
+        /*带水平线*/
+        .table th{font-weight:bold}
+        .table th,.table td{padding:8px;line-height:20px}
+        .table td{text-align:left}
+        .table tbody tr.success > td{background-color:#dff0d8}
+        .table tbody tr.error > td{background-color:#f2dede}
+        .table tbody tr.warning > td{background-color:#fcf8e3}
+        .table tbody tr.info > td{background-color:#d9edf7}
+        .table tbody + tbody{border-top:2px solid #ddd}
+        .table .table{background-color:#fff}
+
+        /*带横向分割线*/
+        .table-border{border-top:1px solid #ddd}
+        .table-border th,.table-border td{border-bottom:1px solid #ddd}
+
+        /*th带背景*/
+        .table-bg thead th{background-color:#F5FAFE}
+        /*带外边框*/
+        .table-bordered{border:1px solid #ddd;border-collapse:separate;*border-collapse:collapse;border-left:0}
+        .table-bordered th,.table-bordered td{border-left:1px solid #ddd}
+        .table-border.table-bordered{border-bottom:0}
+
+        /*奇数行背景设为浅灰色*/
+        .table-striped tbody > tr:nth-child(odd) > td,.table-striped tbody > tr:nth-child(odd) > th{background-color:#f9f9f9}
+        {#/*竖直方向padding缩减一半*/#}
+        .table-condensed th,.table-condensed td{padding:4px 5px}
+    </style>
+</head>
+<body>
+
+<table class="table table-border table-bordered table-striped">
+  <thead>
+    <tr><th width="20%">Class</th><th>描述</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>.active</th><td>悬停在行</td></tr>
+    <tr><th>.success</th><td>成功或积极</td></tr>
+    <tr><th>.warning</th><td>警告或出错</td></tr>
+    <tr><th>.danger</th><td>危险</td></tr>
+  </tbody>
+</table>
+
