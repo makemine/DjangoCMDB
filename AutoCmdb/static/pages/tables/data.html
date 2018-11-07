@@ -32,20 +32,15 @@
                     <div class="group">
                         <input id="ip" type="text" placeholder="主机名" name="hostname" />
                         <input id="port" type="text" placeholder="管理IP" name="manage_ip" />
-
-                    <a id="ajax_submit" >添加主机</a>
-                    <span id="erro_msg" style="color: red"></span>
-                </form>
-            <!-- Single button -->
-            <div class="btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                warz <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="#">warz</a></li>
-                <li><a href="#">ls</a></li>
-              </ul>
-            </div>
+                        <a id="ajax_submit" >添加主机</a>
+                        <span id="erro_msg" style="color: red"></span>
+                        <select name="se" id="se">
+                            <option>pen</option>
+                            <option>pencil</option>
+                            <option selected>选择项目</option>
+                        </select>
+                    </div>
+                  </form>
             <div style="padding: 5px 8px;">
 
                 <div class="list-block">
@@ -131,11 +126,8 @@
 
                     </div>
                 </div>
-
             </div>
-
             </div>
-
             </div>
         </div>
 
@@ -180,7 +172,7 @@
             $.ajax({
                 url: "/repository/add_ajax",
                 type: 'POST',
-                //data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
+                // data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
                 data: $('#add_form').serialize(),
                 success: function(data){
                     var obj = JSON.parse(data);
@@ -211,7 +203,6 @@
             alert("确定删除?");
         });
         $(".edit").click(function () {
-            console.log('12121212');
             $(this).parent().siblings('td').contents().unwrap().wrap('<input>');
         });
 
@@ -233,10 +224,25 @@
                         })
                     });
                 }
-
         });
     });
 
+    $(function () {
+        $('#se').change(function () {
+            {#alert($('#se').val());#}
+            $.ajax({
+                type: "POST",
+                url: '/repository/SwitchProject',
+                data: $('#se').serialize(),
+                success: function (obj) {
+                    {#location.reload();#}
+                    console.log($('#se').val())
+                }
+            });
+
+
+        });
+    });
 </script>
 {% endblock %}
 

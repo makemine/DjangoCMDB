@@ -137,6 +137,14 @@ def data(request):
 
 
 @auth
+def SwitchProject(request):
+    ret = {'status': True, 'error': '请求错误', 'data': None}
+    if request.method == "POST":
+        a = request.POST.get("se")
+        print('1111111', a)
+    return HttpResponse(json.dumps(ret))
+
+@auth
 def details(request):
     page = request.GET.get('p')
     # print('page',type(page))
