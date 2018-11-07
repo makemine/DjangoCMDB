@@ -229,13 +229,11 @@
 
     $(function () {
         $('#se').change(function () {
-            {#alert($('#se').val());#}
             $.ajax({
                 type: "POST",
                 url: '/repository/SwitchProject',
                 data: $('#se').serialize(),
                 success: function (obj) {
-                    {#location.reload();#}
                     console.log($('#se').val())
                 }
             });
