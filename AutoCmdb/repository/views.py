@@ -4,12 +4,12 @@ from repository.froms import LoginForm
 # 分页卸载utils目录下
 from utils import pagination
 import json
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from repository.models import Server, UserProfile
 from django.views.generic.base import View
-
-
+from repository import models
+from repository.permission import check_permission
 class LoginView(View):
     def get(self, request):
         login_form = LoginForm()
@@ -20,7 +20,7 @@ class LoginView(View):
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             cd = login_form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
+            user = authenticate(request, username=cd['username'], password=cd['password'])
             if user:
                 username = login_form.cleaned_data['username']
                 # print(username)
@@ -28,8 +28,8 @@ class LoginView(View):
                 '''用户登陆后，Django会自动调用默认的session应用，
                     将用户的id存至session中，通常情况下，login与authenticate
                     配合使用'''
+                login(request, user)
                 response = render(request, 'index2.html', {"current_user": username})
-
                 response.set_cookie('username', username, 3600)
                 return response
             else:
@@ -99,9 +99,10 @@ class DbOperation:
 
 
 @auth
+@check_permission
 def data(request):
     v = request.COOKIES.get('username')
-    username = request.session["username"]
+    username = request.session['username']
 
     req = DbOperation
     req = req.dbSearch()
@@ -109,7 +110,7 @@ def data(request):
     for i in req:
         LIST.append(i)
     current_page = request.GET.get('p', 1)
-    #分页----判断是否为空，如果为空则current_page默认为1
+    """分页----判断是否为空，如果为空则current_page默认为1"""
     if current_page:
         current_page = int(current_page)
 
@@ -166,6 +167,7 @@ def details(request):
 #         return render(request, '../static/pages/ops/ops.html', {'current_user': v,'results': results})
 #     return render(request, '../static/pages/ops/ops.html', {'current_user': v})
 @auth
+@check_permission
 def ops(request):
     v = request.COOKIES.get('username')
     return render(request, '../static/pages/ops/ops.html', {'current_user': v})
@@ -173,6 +175,7 @@ def ops(request):
 #     def post(self, request):
 #         v = request.COOKIES.get('username')
 #         return render(request, '../static/pages/ops/ops.html', {'current_user': v})
+
 
 @auth
 def opsexecute(request):
@@ -204,5 +207,3 @@ def del_info(request):
     id = request.GET.get('p')
     Server.objects.filter(id__contains=id).delete()
     return HttpResponseRedirect('/repository/data')
-
-

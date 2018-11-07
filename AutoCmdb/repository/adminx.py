@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 import xadmin
-from .models import IDC, BusinessUnit, Tag, Asset, Server, NetworkDevice, AssetRecord, ErrorLog
+from .models import IDC, BusinessUnit, Tag, Asset, Server, NetworkDevice, AssetRecord, ErrorLog, Permission
 from xadmin import views
 
 
@@ -77,6 +77,13 @@ class ErrorLogAdmin:
     list_filter = ['asset_obj', 'title', 'content', 'create_at']
 
 
+class PermissionAdmin:
+    list_display = ['name', 'url', 'per_method', 'argument_list', 'describe']
+    search_fields = ['name', 'url', 'per_method', 'argument_list', 'describe']
+    list_filter = ['name', 'url', 'per_method', 'argument_list', 'describe']
+
+
+
 xadmin.site.register(BusinessUnit, BusinessUnitAdmin)
 xadmin.site.register(IDC, IDCAdmin)
 xadmin.site.register(Tag, TagAdmin)
@@ -85,6 +92,8 @@ xadmin.site.register(Server, ServerAdmin)
 xadmin.site.register(NetworkDevice, NetworkDeviceAdmin)
 xadmin.site.register(AssetRecord, AssetRecordAdmin)
 xadmin.site.register(ErrorLog, ErrorLogAdmin)
+xadmin.site.register(Permission, PermissionAdmin)
 
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)
+

@@ -1,17 +1,11 @@
 from __future__ import unicode_literals
-
 from django.db import models
-
-# Create your models here.
-
 # 导入django原有的user表，并继承
 from django.contrib.auth.models import AbstractUser
 
 
 class UserProfile(AbstractUser):
-    """
-    用户信息
-    """
+    """用户信息"""
     nick_name = models.CharField(max_length=50, verbose_name=u'昵称', default="")
     email = models.EmailField(u'邮箱')
     phone = models.CharField(u'座机', max_length=32)
@@ -113,9 +107,7 @@ class Asset(models.Model):
 
 
 class Server(models.Model):
-    """
-    服务器信息
-    """
+    """服务器信息"""
     # asset = models.OneToOneField('Asset', on_delete=models.CASCADE)
 
     hostname = models.CharField(max_length=128, unique=True, verbose_name="主机名称")
@@ -157,15 +149,12 @@ class NetworkDevice(models.Model):
     port_num = models.SmallIntegerField('端口个数', null=True, blank=True)
     device_detail = models.CharField('设置详细配置', max_length=255,null=True,blank=True)
 
-
     class Meta:
         verbose_name_plural = '网络设备表'
 
 
 class AssetRecord(models.Model):
-    """
-    资产变更记录，creator为空时，表示是资产汇报的数据。
-    """
+    """资产变更记录，creator为空时，表示是资产汇报的数据。"""
     asset_obj = models.ForeignKey('Asset', related_name='ar', on_delete=models.CASCADE)
     content = models.TextField(null=True)
     creator = models.ForeignKey('UserProfile', null=True, blank=True, on_delete=models.CASCADE)
@@ -179,9 +168,7 @@ class AssetRecord(models.Model):
 
 
 class ErrorLog(models.Model):
-    """
-    错误日志,如：agent采集数据错误 或 运行错误
-    """
+    """错误日志,如：agent采集数据错误 或 运行错误"""
     asset_obj = models.ForeignKey('Asset', null=True, blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=16)
     content = models.TextField()
@@ -192,3 +179,24 @@ class ErrorLog(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Permission(models.Model):
+    name = models.CharField("权限名称", max_length=64)
+    url = models.CharField('URL名称', max_length=255)
+    # chioces1 = ((1, 'GET'), (2, 'POST'))
+    per_method = models.SmallIntegerField('请求方法', choices=((1, "GET"), (2, "POST")), default=1)
+    argument_list = models.CharField('参数列表', max_length=255, help_text='多个参数之间用英文半角逗号隔开', blank=True, null=True)
+    describe = models.CharField('描述', max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '权限表'
+        verbose_name_plural = verbose_name
+        """权限信息，这里定义的权限的名字，后面是描述信息，描述信息是在django admin中显示权限用的"""
+        permissions = (
+            ('views_data', '资产表'),
+            ('views_ops', '运维操作'),
+        )
