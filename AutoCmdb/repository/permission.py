@@ -3,7 +3,6 @@
 
 from django.shortcuts import render
 from repository import models
-from django.db.models import Q
 # from django.core.urlresolvers import resolve   # 此方法可以将url地址转换成url的name
 from django.urls import resolve     # django2.0中上面的方法已取消
 
@@ -11,7 +10,6 @@ from django.urls import resolve     # django2.0中上面的方法已取消
 def perm_check(request, *args, **kwargs):
     url_obj = resolve(request.path_info)
     url_name = url_obj.url_name
-    print('url_name', url_name)
     perm_name = ''
     # 权限必须和urlname配合使得
     if url_name:
@@ -28,20 +26,14 @@ def perm_check(request, *args, **kwargs):
             for i in url_args:
                 url_args_list.append(str(url_args[i]))
             url_args_list = ','.join(url_args_list)
-            print('url_args_list', url_args_list)
         else:
             url_args_list = None
         # 操作数据库
         get_perm = models.Permission.objects.filter(url=url_name).filter(per_method=url_method).filter(argument_list=url_args_list)
-        print('22222', get_perm)
         if get_perm:
             for i in get_perm:
-                print('11111', i)
-
                 perm_name = i.name
-                print(perm_name)
                 perm_str = 'repository.%s' % perm_name
-                print('request.user',request.user)
                 if request.user.has_perm(perm_str): # 匹配权限
                     print('====》权限已匹配')
                     return True
