@@ -3,13 +3,20 @@
 {% block AssetsForm %}
     <form id="add_form">
         <textarea rows="5" cols="30" name="a">
-
         </textarea>
         <input name="db" id="db" placeholder="数据库名">
-
         <input type="submit" id="execute" value="执行" >
     </form>
     <textarea rows="5" cols="30" name="a">{{ results }} 返回结果</textarea>
+    <br><br><br>
+    <div id="add_email">
+        <a>收件人</a>:  <input name="receiver" id="receiver" size="30" placeholder="收件人"><br>
+        <a>主题</a>:  <input name="subject" id="subject" size="50" placeholder="主题"><br>
+        <a>正文: </a><br><textarea name="msg" id="msg" rows="3" cols="50"></textarea><br>
+        <a>添加附件</a>：<input type="file" name="file" id="file_upload" />
+        <br>
+        <input type="button" id="execute_email" value="发送">
+    </div>
 
 <script src="{% static 'js/jquery-1.12.4.js' %}"></script>
 <script src="{% static 'js/jquery.cookie.js' %}"></script>
@@ -25,16 +32,33 @@
                 data: $('#add_form').serialize(),
                 success: function(obj){
                     alert("确定执行sql？");
-                    {#console.log('1')#}
                 }
-
             })
         });
 
-     })
+        $('#execute_email').click(function () {
+            let receiver = $('#receiver').val();
+            let subject = $('#subject').val();
+            let msg = $('#msg').val();
+            let form_data = new FormData();
+            let file_info =$('#file_upload')[0].files[0];
+            form_data.append('file',file_info);
+            form_data.append('receiver',receiver);
+            form_data.append('subject',subject);
+            form_data.append('msg',msg);
 
-
-
+            $.ajax({
+                url:'/repository/opsemail/',
+                type:'POST',
+                data: form_data,
+                processData: false,  // tell jquery not to process the data
+                contentType: false, // tell jquery not to set contentType
+                success: function(obj){
+                    console.log('1');
+                }
+            })
+        });
+     });
 </script>
 {% endblock %}
 

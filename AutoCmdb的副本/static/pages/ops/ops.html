@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block AssetsForm %}
+    <form id="add_form">
+        <textarea rows="5" cols="30" name="a">
+
+        </textarea>
+        <input name="db" id="db" placeholder="数据库名">
+
+        <input type="submit" id="execute" value="执行" >
+    </form>
+    <textarea rows="5" cols="30" name="a">{{ results }} 返回结果</textarea>
+
+<script src="{% static 'js/jquery-1.12.4.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/nb-list.js' %}"></script>
+
+<script>
+
+     $(function () {
+        $('#execute').click(function(){
+            $.ajax({
+                type: "POST",
+                url: '/repository/opsexecute/',
+                data: $('#add_form').serialize(),
+                success: function(obj){
+                    alert("确定执行sql？");
+                    {#console.log('1')#}
+                }
+
+            })
+        });
+
+     })
+
+
+
+</script>
+{% endblock %}
+

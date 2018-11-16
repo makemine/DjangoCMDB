@@ -1,0 +1,73 @@
+{% load staticfiles %}
+{% block AssetsForm %}
+    <style>
+        .pagination .page{
+            display: inline-block;
+            padding: 5px;
+            background-color: cyan;
+            margin: 5px;
+        }
+        .pagination .page.active{
+            background-color: brown;
+            color: white;
+        }
+    </style>
+    <!-- Main content 表格内容-->
+      <div class="row">
+
+        <div class="table-responsive table-area">
+            <table class="table table-striped table-bordered">
+                <!-- 表格标题开始 -->
+                <thead id="table_head">
+                 <tr>
+                     <th id="allCheckbox"> 选项</th>
+                     <th>主机名称</th>
+                     <th>SN号</th>
+                     <th>管理IP</th>
+                     <th>系统版本</th>
+                     <th>CPU个数</th>
+                     <th>CPU型号</th>
+                     <th>创建时间</th>
+                     <th>业务线</th>
+                     <th>磁盘容量GB</th>
+                     <th>磁盘类型</th>
+                     <th>内存容量GB</th>
+                     <th>操作</th>
+                </tr>
+                </thead>
+
+                <!-- 表格内容开始 -->
+                <tbody id="tb" edit-mode='false'>
+                {% for row in user_list %}
+                    <tr id='tb1'>
+                        <td><input type="checkbox"/></td>
+                        <td>{{ row.hostname }}</td>
+                        <td>{{ row.sn }}</td>
+                        <td>{{ row.manage_ip }}</td>
+                        <td>{{ row.os_version }}</td>
+                        <td>{{ row.cpu_count}}</td>
+                        <td>{{ row.cpu_physical_count }}</td>
+                        <td>{{ row.create_at}}</td>
+                        <td>{{ row.business_unit }}</td>
+                        <td>{{ row.capacity_disk }}</td>
+                        <td>{{ row.pd_type }}</td>
+                        <td>{{ row.capacity_memory }}</td>
+
+                        <td>
+                            <a class="edit">编辑</a>|<a href="/repository/details/?p={{ row.id }}">详情</a>|<a href="/repository/del/?p={{ row.id }}" class="delete">删除</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                {{ page_str }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+

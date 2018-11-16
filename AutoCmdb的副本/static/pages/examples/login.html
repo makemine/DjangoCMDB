@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>运维管理平台</title>
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+       <a><b>运维管理平台</b></a>
+    </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+
+    <form method="POST">
+      <div class="form-group has-feedback">
+          <a >用户 &nbsp;&nbsp;</a>{{ forms.username }}
+          <br><br>
+          <a>密码 &nbsp;&nbsp;</a>{{ forms.password }}
+          <br><br>
+          <input type="submit"  style="width:320px;" class="btn btn-primary btn-block btn-flat" value="提交">
+          <span><font color="red">{{ error_msg }}</font></span>
+      </div>
+    </form>
+    <a href="#">忘记密码</a><br>
+    <a href="register.html" class="text-center">注册</a>
+
+  </div>
+</div>
+{% include 'js.html' %}
+
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' /* optional */
+    });
+  });
+</script>
+</body>
+</html>
